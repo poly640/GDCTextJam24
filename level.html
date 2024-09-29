@@ -1,33 +1,133 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
-    <head>
-        <link rel="stylesheet" href="style.css" />
-        <script src="main.js"></script>
-        <meta charset="utf-8" />
-    </head>
+	<head>
+		<link rel="stylesheet" href="style.css" />
+		<meta charset="utf-8" />
+		<script>
+			var LEVEL_DATA = [
+				// index = level #
+				// level 1
+				{
+					prompt: `
+						Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+						Pellentesque consectetur est orci, et faucibus arcu auctor sed.
+						Nulla quis lectus odio.
+						Vivamus et nibh tempor risus consectetur efficitur.
+					`,
+					code: ["13012", "13013", "13014", "13015"],
+					solution: "test",
+				},
+			];
 
-    <body>
-        <h1 style="text-align: center; margin-top: 100px">The Labyrinth</h1>
-        <div id="info" class="center">
-            <p>
-                You are currently at the<b id="level-display">xxxx</b>passage.
-            </p>
-            <p style="width: 550px">
-                <b>Riddle: </b>I am desired by all whom wish for eternal life. I
-                am sought by kings, queens, and other royalty. What am I?
-            </p>
-        </div>
-        <div id="content" class="center">
-            <h1 id="code" style="font-size: 64px">undefined</h1>
-            <p>
-                Time remaining: <b id="time-display" style="color: green">60</b>
-            </p>
-            <p>Input</p>
-            <form action="/index.html#2">
-                <input type="text" id="code-input" name="code-input" required />
-                <br />
-                <input style="margin-top: 20px" type="submit" />
-            </form>
-        </div>
-    </body>
+			function parseGlyph(hex) {
+				return "&#" + parseInt(hex, 16);
+			}
+
+			function parseCode(code) {
+				let output = "";
+				code.forEach((hex) => {
+					output = output + parseGlyph(hex);
+				});
+
+				return output;
+			}
+
+			function parseLevelText(level) {
+				function getSuffix() {
+					switch (level) {
+						case 1:
+							return "st";
+						case 2:
+							return "nd";
+						case 3:
+							return "rd";
+					}
+
+					return "th";
+				}
+
+				return level + getSuffix();
+			}
+
+			function processInput(form) {
+				let level = parseInt(sessionStorage.getItem("level"), 10);
+				let input = document.getElementById("code-input").value;
+				let solution = LEVEL_DATA[level - 1].solution;
+
+				// handle code input here
+				if (input.toLowerCase() === solution.toLowerCase()) {
+					// if next level exists, go there
+					// otherwise win!
+					if (LEVEL_DATA[level] != null) {
+						sessionStorage.setItem("level", level + 1);
+						form.action = "./level.html";
+					} else {
+						sessionStorage.setItem("victory", 1);
+						form.action = "./result.html";
+					}
+				} else {
+					sessionStorage.setItem("victory", 0);
+					form.action = "./result.html";
+				}
+
+				return false;
+			}
+
+			function onLoad() {
+				let level = parseInt(sessionStorage.getItem("level"), 10);
+				let levelInfo = LEVEL_DATA[level - 1];
+
+				event.preventDefault();
+
+				// update level info
+				document.getElementById("prompt").innerHTML =
+					"<b>Prompt: </b>" + levelInfo.prompt;
+
+				document.getElementById("level-display").innerHTML =
+					" " + parseLevelText(level) + " ";
+
+				document.getElementById("code").innerHTML = parseCode(levelInfo.code);
+
+				// run timer
+				let timeLeft = 60;
+				function processTimer() {
+					if (timeLeft <= 0) {
+						console.log("Timer done");
+						sessionStorage.setItem("victory", 0);
+						window.location.replace("./result.html");
+						return;
+					}
+
+					timeLeft--;
+					window.setTimeout(processTimer, 1000);
+					document.getElementById("time-display").innerHTML = timeLeft;
+				}
+
+				window.setTimeout(processTimer, 1000);
+			}
+
+			window.addEventListener("load", onLoad, false);
+		</script>
+	</head>
+
+	<body>
+		<h1 style="text-align: center; margin-top: 100px">The Labyrinth</h1>
+		<div id="info" class="center">
+			<p>You are currently at the<b id="level-display">xxxx</b>passage.</p>
+			<p id="prompt" style="width: 550px">
+				<b>Prompt: </b>
+				undefined
+			</p>
+		</div>
+		<div id="content" class="center">
+			<h1 id="code" style="font-size: 64px">undefined</h1>
+			<p>Time remaining: <b id="time-display" style="color: green">60</b></p>
+			<p>Input</p>
+			<form id="input-code" action="#" onsubmit="processInput(this)">
+				<input type="text" id="code-input" name="code-input" required />
+				<br />
+				<input style="margin-top: 20px" type="submit" />
+			</form>
+		</div>
+	</body>
 </html>

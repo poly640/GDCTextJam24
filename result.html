@@ -1,0 +1,43 @@
+<!doctype html>
+<html>
+    <head>
+        <link rel="stylesheet" href="style.css" />
+        <meta charset="utf-8" />
+        <script>
+            function reset() {
+                sessionStorage.clear();
+                window.location.replace("./index.html");
+            }
+
+            function onLoad() {
+                let victory = parseInt(sessionStorage.getItem("victory"), 10);
+                let header = document.getElementById("result-text");
+
+                console.log(victory);
+                if (victory == 1) {
+                    header.innerHTML = "You <b style='color: green'>Win!</b>"
+                } else {
+                    header.innerHTML = "You <b style='color: red'>Lose!</b>"
+                }
+            }
+
+            window.addEventListener("load", onLoad, false)
+        </script>
+    </head>
+
+    <body>
+        <h1 style="text-align: center; margin-top: 100px" id="result-text">undefined<br /><br /></h1>
+        <div class="center">
+            <p style="width: 550px; text-align: left">
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed convallis condimentum ex et interdum.<br /><br />
+                Quisque egestas elit eget turpis aliquet tincidunt. Aliquam ut efficitur sem, et dignissim nibh.
+                Mauris rhoncus mattis venenatis. Duis accumsan bibendum tellus, et vestibulum felis malesuada vitae.<br /><br />
+                Mauris pharetra vestibulum justo, et ultrices ipsum faucibus id. Cras ipsum metus, sodales et justo vel, placerat posuere nunc.<br /><br />
+            </p>
+
+            <button onclick="reset(this)" style="width: 150px; height: 50px; margin-top: 25px" ">
+                Play Again
+            </button>
+        </div>
+    </body>
+</html>

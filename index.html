@@ -3,28 +3,33 @@
     <head>
         <link rel="stylesheet" href="style.css" />
         <meta charset="utf-8" />
+        <script>
+            function init() {
+                // btw these are strings when u read them cause javascript is ass
+                // so make sure to convert with parseInt(sessionStorage.getItem("variable"), 10);
+                sessionStorage.setItem("level", 1);
+                sessionStorage.setItem("runtime", 0);
+                sessionStorage.setItem("victory", 0) // 0=false 1=true
+                window.location.replace("./level.html")
+            }
+        </script>
     </head>
 
     <body>
         <h1 style="text-align: center; margin-top: 100px">The Labyrinth</h1>
         <div class="center">
             <p style="width: 550px; text-align: left">
-                Welcome to the Labyrinth.<br /><br />
-                You have found yourself trapped at the bottom of an ancient
-                labyrinth, which has begun to cave in on itself. Your only
-                chance of escape lies in the twelve passages, each sealed with
-                hieroglyphic codes.<br /><br />
-                You have a limited amount of time to decode each passage before
-                the labyrinth collapses. The key to solving them will be found
-                in the riddle preceding each door.<br /><br />
-                When you are ready to begin your escape, press the button below.
+                Welcome to the <b>Labyrinth.</b><br /><br />
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed convallis condimentum ex et interdum.<br /><br />
+                Quisque egestas elit eget turpis aliquet tincidunt. Aliquam ut efficitur sem, et dignissim nibh.
+                Mauris rhoncus mattis venenatis. Duis accumsan bibendum tellus, et vestibulum felis malesuada vitae.<br /><br />
+                Mauris pharetra vestibulum justo, et ultrices ipsum faucibus id. Cras ipsum metus, sodales et justo vel, placerat posuere nunc.<br /><br />
+                When you are ready to begin, press the button below.<br /><br />
             </p>
 
-            <form action="./level.html#1">
-                <button type="submit" style="width: 150px; height: 50px; margin-top: 25px" ">
-                    Start
-                </button>
-            </form>
+            <button onclick="init(this)" style="width: 150px; height: 50px; margin-top: 25px" ">
+                Start
+            </button>
         </div>
     </body>
 </html>
